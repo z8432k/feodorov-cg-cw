@@ -1,20 +1,30 @@
 set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE  ON)
 
-find_package(OpenGL REQUIRED COMPONENTS OpenGL)
-find_package(GLUT REQUIRED)
+find_package(Qt4 REQUIRED)
 
 include_directories(include)
 
-add_library(orig OBJECT orig.cc)
-target_link_libraries(orig PUBLIC ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
 
-add_library(cube OBJECT cube.cc)
-target_link_libraries(cube PUBLIC ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
+add_library(main OBJECT figure.cc)
+target_link_libraries(main
+        Qt4::QtCore
+        Qt4::QtGui)
 
+add_library(moc_mainwindow OBJECT moc_mainwindow.cpp)
+target_link_libraries(moc_mainwindow
+        Qt4::QtCore
+        Qt4::QtGui)
 
+add_library(mainwindow OBJECT mainwindow.cc)
+target_link_libraries(mainwindow
+        Qt4::QtCore
+        Qt4::QtGui)
 
-add_executable(orig-cw orig-cw.cc)
-target_link_libraries(orig-cw orig)
+add_executable(figure)
+target_link_libraries(figure
+        main
+        moc_mainwindow
+        mainwindow
+        Qt4::QtCore
+        Qt4::QtGui)
 
-add_executable(cube-cw cube-cw.cc)
-target_link_libraries(cube-cw cube)
